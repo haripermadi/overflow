@@ -5,8 +5,11 @@ import App from './App'
 import router from './router'
 import VeeValidate from 'vee-validate'
 import store from './store'
+import moment from 'moment'
+
 Vue.config.productionTip = false
 Vue.use(VeeValidate)
+Vue.use(moment)
 
 /* eslint-disable no-new */
 new Vue({

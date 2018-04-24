@@ -1,14 +1,17 @@
 const User = require('../models/users')
 const bcrypt = require('bcryptjs')
+const saltRounds = 10;
+const salt = bcrypt.genSaltSync(saltRounds);
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
 
 module.exports = {
   signUp: function (req, res) {
+    let hash = bcrypt.hashSync(req.body.password,salt)
     let input = {
       name: req.body.name,
       email: req.body.email,
-      password: req.body.password
+      password: hash
     }
 
     User.findOne({

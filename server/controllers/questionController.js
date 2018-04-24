@@ -43,6 +43,40 @@ module.exports = {
       })
     })
   },
+  showUserQuestion: function (req, res) {
+    console.log('userid===', req.params.id)
+    Question.find({
+      userId: req.params.id
+    })
+    .sort({updatedAt: 'desc'})
+    .exec()
+    .then(data=>{
+      res.status(200).json({
+        message:' success get list user question',
+        data
+      })
+    }).catch(err=>{
+      res.status(400).json({
+        message: 'failed get questions'
+      })
+    })
+  },
+  getQuestionById: function (req, res) {
+    console.log('id question==', req.params.id)
+    Question.findById(req.params.id)
+    .populate('userId')
+    .exec()
+    .then(data => {
+      res.status(200).json({
+        message:' success get question',
+        data
+      })
+    }).catch(err=>{
+      res.status(400).json({
+        message: 'failed get questions'
+      })
+    })
+  },
   removeQuestion: function (req, res) {
     let id = {
       _id:req.params.id

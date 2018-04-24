@@ -27,8 +27,10 @@ module.exports = {
       }
     })
   },
-  showAllAnswer: function (req, res) {
-    Answer.find()
+  showAnswerByQuestion: function (req, res) {
+    Answer.find({
+      questionId: req.params.questionid
+    })
     .sort({updatedAt: 'desc'})
     .populate('userId')
     .exec()

@@ -2,7 +2,8 @@
 <div>
 
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Over-flow</a>
+    <!-- <a class="navbar-brand" href="#"></a> -->
+    <router-link class="navbar-brand" to="/">CatsVerFlow</router-link>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -10,21 +11,21 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
-          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+          <router-link class="nav-link" to="/">Home <span class="sr-only">(current)</span></router-link>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
+        <li class="nav-item" v-if="token !== ''">
+          <router-link class="nav-link" to="/myquestions">My Questions</router-link>
         </li>
       </ul>
       <form class="form-inline my-2 my-lg-0">
         <ul class="navbar-nav mr-auto">
-        <li class="nav-item">
+        <li class="nav-item" v-if="token === ''">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">Login</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="token === ''">
           <a class="nav-link" href="#" data-toggle="modal" data-target="#signUpModal">Sign Up</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="token !== ''">
           <a class="nav-link logout" href="#" @click="logOut">Log Out</a>
         </li>
       </ul>
@@ -45,19 +46,19 @@
           <form>
             <div class="form-group">
               <label for="name" class="col-form-label">Name:</label>
-              <input type="text" class="form-control" v-model="objNewuser.name" placeholder="name...">
+              <input type="text" class="form-control" placeholder="name..." v-model="objNewUser.name">
             </div>
             <div class="form-group">
               <label for="email" class="col-form-label">Email:</label>
               <p :class="{ 'control': true }">
-                <input v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }" name="email" type="text" class="form-control" v-model="objNewuser.email" placeholder="Email">
+                <input v-validate="'required|email'" :class="{'input': true, 'is-danger': errors.has('email') }" v-model="objNewUser.email" name="email" type="text" class="form-control" placeholder="Email">
                 <span v-show="errors.has('email')" class="help text-danger">{{ errors.first('email') }}</span>
               </p>
             </div>
             <div class="form-group">
               <label for="password" class="col-form-label">Password:</label>
                <p class="control has-icon has-icon-right">
-                <input name="password" v-validate="'required|min:6'" :class="{'input': true, 'is-danger': errors.has('password') }" type="password" class="form-control" v-model="objNewuser.password"  placeholder="Password">
+                <input name="password" v-validate="'required|min:6'" :class="{'input': true, 'is-danger': errors.has('password') }" v-model="objNewUser.password" type="password" class="form-control" placeholder="Password">
                 <i v-show="errors.has('password')" class="fa fa-warning"></i>
                 <span v-show="errors.has('password')" class="help text-danger">{{ errors.first('password') }}</span>
             </p>
@@ -119,17 +120,25 @@ export default {
       }
     }
   },
+  computed: {
+    token: function () {
+      return this.$store.getters.getActiveUser.token
+    }
+  },
   methods: {
     signUpButton: function () {
       console.log('signup===', this.objNewUser)
+      this.$store.dispatch('signUp', this.objNewUser)
     },
     signInButton: function () {
       console.log('signin===', this.objUser)
+      this.$store.dispatch('signIn', this.objUser)
     },
     logOut: function () {
       alert('log out?')
-      localStorage.clear()
-      this.$router.push({path: '/'})
+      this.$store.dispatch('logOut').then(() => {
+        this.$router.push({path: '/'})
+      })
     }
   }
 }

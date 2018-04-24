@@ -7,12 +7,17 @@
       <!-- <img src="./assets/logo.png" alt="Vue.js PWA"> -->
       <router-view></router-view>
     </main>
+    <footer-bar></footer-bar>
   </div>
 </template>
 
 <script>
+import FooterBar from '@/components/Footer'
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    FooterBar
+  }
 }
 </script>
 
@@ -29,7 +34,8 @@ body {
 }
 
 main {
-  text-align: center;
+  /* text-align: center; */
+  min-height: 520px;
 }
 
 header {
