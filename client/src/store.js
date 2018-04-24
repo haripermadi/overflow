@@ -120,7 +120,7 @@ export default new Vuex.Store({
             'Your have been logged out',
             'success'
           )
-          // localStorage.clear()
+          localStorage.clear()
           context.state.activeUser.token = ''
           context.state.activeUser.name = ''
           context.state.activeUser.userId = ''

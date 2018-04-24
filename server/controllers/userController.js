@@ -4,6 +4,8 @@ const saltRounds = 10;
 const salt = bcrypt.genSaltSync(saltRounds);
 const jwt = require('jsonwebtoken')
 const secret = process.env.SECRET
+const kue = require('kue')
+const queue = kue.createQueue();
 
 module.exports = {
   signUp: function (req, res) {
@@ -62,6 +64,14 @@ module.exports = {
         let checkPass = bcrypt.compareSync(req.body.password,dataUser.password)
         if(checkPass){
           let token = jwt.sign({id:dataUser._id,email:dataUser.email},secret)
+
+          let job = queue.create('email', {
+            title: 'Notification from catsverlow',
+            to: dataUser.email,
+            name: dataUser.name
+          }).save( function(err){
+            if( !err ) console.log( job.id )
+         })
           res.status(200).json({
             message:"login success",
             data:{

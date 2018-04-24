@@ -4,7 +4,6 @@
     <div class="jumbotron">
       <h1 class="display-4">CatsVerFlow</h1>
       <p class="lead">Learn and share how to take care your cats.</p>
-      <hr class="my-4">
     </div>
     <div class="container">
       <div class="row">

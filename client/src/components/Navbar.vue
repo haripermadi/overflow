@@ -135,7 +135,6 @@ export default {
       this.$store.dispatch('signIn', this.objUser)
     },
     logOut: function () {
-      alert('log out?')
       this.$store.dispatch('logOut').then(() => {
         this.$router.push({path: '/'})
       })

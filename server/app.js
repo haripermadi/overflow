@@ -7,8 +7,8 @@ const cors = require('cors')
 const mongoose = require('mongoose')
 require('dotenv').load();
 
-mongoose.connect('mongodb://localhost:27017/overflow2')
-// mongoose.connect('mongodb://overflow123:over123@ds127129.mlab.com:27129/overflow2018')
+// mongoose.connect('mongodb://localhost:27017/overflow2')
+mongoose.connect('mongodb://overflow123:over123@ds127129.mlab.com:27129/overflow2018')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const questionRouter = require('./routes/question')
