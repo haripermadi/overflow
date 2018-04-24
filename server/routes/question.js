@@ -9,6 +9,6 @@ router.post('/', addQuestion)
 router.delete('/:id', removeQuestion)
 router.put('/:id', updateQuestion)
 router.post('/upvote', upvote)
-router.post('/donwvote', downVote)
+router.post('/downvote', downVote)
 
 module.exports = router;

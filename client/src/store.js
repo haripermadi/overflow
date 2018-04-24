@@ -166,12 +166,7 @@ export default new Vuex.Store({
         }
       }).then(response => {
         console.log(response)
-        swal(
-          'Remove question success!',
-          'Your question has been removed!',
-          'success'
-        )
-        context.dispatch('showAllQuestions')
+        context.dispatch('getUserQuestion')
       }).catch(error => {
         console.log(error)
       })
@@ -244,6 +239,91 @@ export default new Vuex.Store({
           'success'
         )
         context.commit('createAnswer', response.data.newAnswer)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    removeAnswer: function (context, payload) {
+      axios({
+        method: 'delete',
+        url: `http://localhost:3000/answer/${payload._id}`,
+        headers: {
+          token: context.state.activeUser.token
+        }
+      }).then(response => {
+        console.log(response)
+        swal(
+          'Remove answer success!',
+          'Your answer has been removed!',
+          'success'
+        )
+        context.dispatch('showAllAnswer', payload.questionId[0])
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    upVoteQuestion: function (context, payload) {
+      console.log('store-upvote==', payload)
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/question/upvote',
+        headers: {
+          token: context.state.activeUser.token
+        },
+        data: {
+          questionId: payload
+        }
+      }).then(response => {
+        console.log('response upvote==', response)
+        // context.commit('getQuestionById')
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    downVoteQuestion: function (context, payload) {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/question/downvote',
+        headers: {
+          token: context.state.activeUser.token
+        },
+        data: {
+          questionId: payload
+        }
+      }).then(response => {
+        console.log('response upvote==', response)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    upVoteAnswer: function (context, payload) {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/answer/upvote',
+        headers: {
+          token: context.state.activeUser.token
+        },
+        data: {
+          answerId: payload
+        }
+      }).then(response => {
+        console.log('response upvote==', response)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
+    downVoteAnswer: function (context, payload) {
+      axios({
+        method: 'post',
+        url: 'http://localhost:3000/answer/downvote',
+        headers: {
+          token: context.state.activeUser.token
+        },
+        data: {
+          answerId: payload
+        }
+      }).then(response => {
+        console.log('response upvote==', response)
       }).catch(error => {
         console.log(error)
       })

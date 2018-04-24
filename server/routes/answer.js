@@ -6,6 +6,6 @@ router.get('/:questionid', showAnswerByQuestion)
 router.post('/', addAnswer)
 router.delete('/:id', removeAnswer)
 router.post('/upvote', upvote)
-router.post('/donwvote', downVote)
+router.post('/downvote', downVote)
 
 module.exports = router

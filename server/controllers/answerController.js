@@ -75,7 +75,7 @@ module.exports = {
       } else {
         let check = true
          dataAnswer.upvotes.forEach((value, index) => {
-           if(value === decoded.id) {
+           if(value == decoded.id) {
              console.log('voters samaaa===', value, decoded.id, index)
              check = false
              dataAnswer.upvotes.splice(index, 1)
@@ -96,7 +96,7 @@ module.exports = {
           })
           if(check) {
             dataAnswer.downvotes.forEach((answerDown, index)=>{
-              if(answerDown === decoded.id) {
+              if(answerDown == decoded.id) {
                 console.log('voters samaaa===', answerDown, decoded.id, index)
                 check = false
                 dataAnswer.downvotes.splice(index, 1)
@@ -134,7 +134,7 @@ module.exports = {
       } else {
         let check = true
          dataAnswer.downvotes.forEach((value, index) => {
-           if(value === decoded.id) {
+           if(value == decoded.id) {
              console.log('voters samaaa===', value, decoded.id, index)
              check = false
              dataAnswer.downvotes.splice(index, 1)
@@ -155,7 +155,7 @@ module.exports = {
           })
           if(check) {
             dataAnswer.upvotes.forEach((answerUp, index)=>{
-              if(answerUp === decoded.id) {
+              if(answerUp == decoded.id) {
                 console.log('voters samaaa===', answerUp, decoded.id, index)
                 check = false
                 dataAnswer.upvotes.splice(index, 1)

@@ -99,6 +99,7 @@ module.exports = {
       title: req.body.title,
       description: req.body.description
     }
+    console.log('update question===', id, input)
     Question.findByIdAndUpdate(id, input, (err) =>{
       if(err){
         res.status(400).json({
@@ -113,9 +114,11 @@ module.exports = {
     })
   },
   upvote: function (req, res) {
+    console.log('rqbodyupvote-----', req.body)
     let token = req.headers.token
     let decoded = jwt.verify(token, secret)
     let questionId = req.body.questionId
+    console.log('upvote=== token-decoded-questionid', token, decoded, questionId)
 
     Question.findById(questionId, (err, dataQuestion) => {
       if(err) {
@@ -125,8 +128,10 @@ module.exports = {
         })
       } else {
         let check = true
+        console.log('question data===', dataQuestion)
          dataQuestion.upvotes.forEach((value, index) => {
-           if(value === decoded.id) {
+           console.log('masuk foreach===', value, decoded.id)
+           if(value == decoded.id) {
              console.log('voters samaaa===', value, decoded.id, index)
              check = false
              dataQuestion.upvotes.splice(index, 1)
@@ -147,7 +152,7 @@ module.exports = {
           })
           if(check) {
             dataQuestion.downvotes.forEach((questionDown, index)=>{
-              if(questionDown === decoded.id) {
+              if(questionDown == decoded.id) {
                 console.log('voters samaaa===', questionDown, decoded.id, index)
                 check = false
                 dataQuestion.downvotes.splice(index, 1)
@@ -185,7 +190,7 @@ module.exports = {
       } else {
         let check = true
          dataQuestion.downvotes.forEach((value, index) => {
-           if(value === decoded.id) {
+           if(value == decoded.id) {
              console.log('voters samaaa===', value, decoded.id, index)
              check = false
              dataQuestion.downvotes.splice(index, 1)
@@ -206,7 +211,7 @@ module.exports = {
           })
           if(check) {
             dataQuestion.upvotes.forEach((questionUp, index)=>{
-              if(questionUp === decoded.id) {
+              if(questionUp == decoded.id) {
                 console.log('voters samaaa===', questionUp, decoded.id, index)
                 check = false
                 dataQuestion.upvotes.splice(index, 1)

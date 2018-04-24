@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import swal from 'sweetalert2'
 import Navbar from '@/components/Navbar'
 export default {
   name: 'MyQuestions',
@@ -66,7 +67,24 @@ export default {
       this.editQuestion = question
     },
     deleteQuestion: function (question) {
-      this.$store.dispatch('removeQuestion', question)
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, remove this question!'
+      }).then((result) => {
+        if (result.value) {
+          swal(
+            'Removed!',
+            'Your question has been removed',
+            'success'
+          )
+          this.$store.dispatch('removeQuestion', question)
+        }
+      })
     },
     updateQuestion: function () {
       this.$store.dispatch('updateQuestion', this.editQuestion)

@@ -9,10 +9,10 @@
       <div class="col-md-3">
         <div class="row">
           <div class="col-md-6 col-12">
-            <button type="button" class="btn btn-success"><span>{{activeQuestion.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
+            <button type="button" class="btn btn-success" @click="upVoteQ(activeQuestion._id)"><span>{{activeQuestion.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
           </div>
           <div class="col-md-6 col-12">
-            <button type="button" class="btn btn-warning"><span>{{activeQuestion.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
+            <button type="button" class="btn btn-warning" @click="downVoteQ(activeQuestion._id)"><span>{{activeQuestion.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
           </div>
         </div>
       </div>
@@ -39,12 +39,12 @@
       <div class="card" v-for="(answer, i) in listAnswers" :key="i">
         <div class="card-body">
           <h5 class="card-title">{{answer.content}}</h5>          
-          <button type="button" class="btn btn-danger">Remove</button>
+          <button v-if="activeUser.userId === answer.userId._id" type="button" class="btn btn-danger" @click="removeAnswer(answer)">Remove</button>
         </div>
         <div class="card-footer text-muted row">
           <div class="col-md-2">
-          <button type="button" class="btn btn-success"><span>{{answer.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
-          <button type="button" class="btn btn-warning"><span>{{answer.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
+          <button type="button" class="btn btn-success" @click="upVoteAns(answer._id)"><span>{{answer.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
+          <button type="button" class="btn btn-warning" @click="downVoteAns(answer._id)"><span>{{answer.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
           </div>
           <div class="col-md-10" id="ansauthr">
             answer by : {{answer.userId.name}} | posted on: {{timeConvert(answer.createdAt)}}
@@ -57,6 +57,7 @@
 <script>
 import Navbar from '@/components/Navbar'
 import moment from 'moment'
+import swal from 'sweetalert2'
 export default {
   name: 'DetailQuestion',
   components: {
@@ -78,6 +79,9 @@ export default {
     },
     listAnswers: function () {
       return this.$store.getters.getAnswers
+    },
+    activeUser: function () {
+      return this.$store.getters.getActiveUser
     }
   },
   methods: {
@@ -95,7 +99,44 @@ export default {
         content: this.content,
         questionId: this.$route.params.id
       }
-      this.$store.dispatch('createAnswer', input)
+      this.$store.dispatch('createAnswer', input).then(() => {
+        this.content = ''
+      })
+    },
+    removeAnswer: function (answer) {
+      console.log('answerdata==', answer.questionId[0])
+      swal({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, remove this answer!'
+      }).then((result) => {
+        if (result.value) {
+          swal(
+            'Removed!',
+            'Your answer has been removed',
+            'success'
+          )
+          this.$store.dispatch('removeAnswer', answer)
+        }
+      })
+    },
+    upVoteQ: function (id) {
+      console.log('current quest==', id)
+      this.$store.dispatch('upVoteQuestion', id)
+    },
+    downVoteQ: function (id) {
+      this.$store.dispatch('downVoteQuestion', id)
+    },
+    upVoteAns: function (id) {
+      this.$store.dispatch('upVoteAnswer', id)
+    },
+    downVoteAns: function (id) {
+      console.log('current answ==', id)
+      this.$store.dispatch('downVoteAnswer', id)
     }
   }
   // updated: function () {
