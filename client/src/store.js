@@ -5,8 +5,8 @@ import swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
-// const serverurl = 'http://server-catsflow.haripermadi.com'
-const serverurl = 'http://localhost:3000'
+const serverurl = 'http://server-catsflow.haripermadi.com'
+// const serverurl = 'http://localhost:3000'
 export default new Vuex.Store({
   state: {
     activeUser: {
@@ -18,7 +18,11 @@ export default new Vuex.Store({
       _id: '',
       title: '',
       description: '',
-      userId: '',
+      userId: {
+        _id: '',
+        name: '',
+        email: ''
+      },
       upvotes: [],
       downvotes: []
     }],

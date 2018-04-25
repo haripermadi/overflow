@@ -2,64 +2,31 @@
   <div>
     <navbar></navbar>
     <div class="jumbotron">
-      <h1 class="display-4">CatsVerFlow</h1>
-      <p class="lead">Learn and share how to take care your cats.</p>
-    </div>
-    <div class="container">
-      {{ listQuestions }}
-      <div class="row">
-        <div class="col-md-3">
-          <button v-if="token !== ''" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal">Post new Question</button>
-        </div>
-        <div class="col-md-9">
-          <h2>List of Questions</h2>
-          <div v-if="listQuestions.length === 0">
-            loading...
-          </div>
-          <div v-else>
-            {{ listQuestions }}
-            data === {{ data }}
-            <button @click="test">test</button>
-            <div class="list-group" v-for="(question, i) in listQuestions" :key="i">
-              <router-link :to="{name: 'DetailQuestion', params: {id:question._id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-                <div class="d-flex w-100 justify-content-between">
-                  <h5 class="mb-1">{{question.title}}</h5>
-                  <small>{{timeConvert(question.createdAt)}}</small>
-                </div>
-                <small>asked by : {{question.userId.name}}</small>
-              </router-link>
-            </div>
-          </div>
-          
-        </div>
+      <div class="headtitle">
+        <h1 class="display-4"><i class="fab fa-github"></i> CatsVerFlow</h1>
+        <p class="lead">Learn and share how to take care your cats.</p>
       </div>
     </div>
-    <!-- modal form question -->
-    <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">What's your question?</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form>
-              <div class="form-group">
-                <label for="title" class="col-form-label">Title:</label>
-                <input type="text" class="form-control" placeholder="question title.." v-model="title">
-              </div>
-              <div class="form-group">
-                <label for="title" class="col-form-label">Description:</label>
-                <textarea class="form-control" rows="8" v-model="description" placeholder="question description..."></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" v-on:click="buttonPost">Post</button>
-          </div>
+    <div class="container">
+      <h2>List of Questions</h2>
+      <hr>
+      <div v-if="listQuestions.length === 0">
+        loading...
+      </div>
+      <div v-else>
+        <div class="list-group" v-for="(question, i) in listQuestions" :key="i">
+          <router-link :to="{name: 'DetailQuestion', params: {id:question._id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{question.title}}</h5>
+              <small>{{timeConvert(question.createdAt)}}</small>
+            </div>
+            <div v-if="question.userId === null">
+              loading...
+            </div>
+            <div v-else>
+              <small>asked by : {{question.userId.name}}</small>
+            </div>
+          </router-link>
         </div>
       </div>
     </div>
@@ -77,17 +44,15 @@ export default {
   },
   data () {
     return {
-      title: '',
-      description: '',
-      data: []
+      data: ['aaaa']
     }
   },
   created: function () {
     this.fetch()
-    this.test()
   },
   computed: {
     listQuestions: function () {
+      // alert(this.$store.state.listQuestions)
       return this.$store.state.listQuestions
     },
     token: function () {
@@ -98,18 +63,11 @@ export default {
     fetch () {
       this.$store.dispatch('showAllQuestions')
     },
-    buttonPost: function () {
-      let input = {
-        title: this.title,
-        description: this.description
-      }
-      this.$store.dispatch('addQuestion', input)
-    },
     timeConvert: function (data) {
       return moment(data).startOf('hour').fromNow()
     },
     test: function () {
-      console.log('data===', this.$store.state.listQuestions)
+      alert('data===', this.$store.state.listQuestions[0].title)
       this.data = this.$store.state.listQuestions
     }
   }
@@ -126,5 +84,20 @@ export default {
   background-repeat: no-repeat;
   height: 450px;
   text-align: center;
+}
+.display-4 {
+  color: #006266;
+  font-weight: bold;
+  font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.headtitle{
+  background: rgba(196, 229, 56, 0.5);
+  margin: 0 auto;
+}
+
+.list-group{
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 </style>

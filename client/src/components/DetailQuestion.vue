@@ -29,28 +29,36 @@
       <form>
         <div class="form-group">
           <label for="exampleFormControlTextarea1">Your Answer</label>
-          <textarea class="form-control" rows="8" v-model="content"></textarea>
+          <textarea class="form-control" rows="5" v-model="content"></textarea>
         </div>
         <button type="button" class="btn btn-primary" @click="postAnswer">Post</button>
       </form>
     </div>
     <hr>
+    <div v-if="listAnswers.length === 'undefined'">
+      loading...
+    </div>
+    <div v-else>
       <p>{{listAnswers.length}} Answer</p>
-      <div class="card" v-for="(answer, i) in listAnswers" :key="i">
-        <div class="card-body">
-          <h5 class="card-title">{{answer.content}}</h5>          
-          <button v-if="activeUser.userId === answer.userId._id" type="button" class="btn btn-danger" @click="removeAnswer(answer)">Remove</button>
+    </div>
+    <div class="card" v-for="(answer, i) in listAnswers" :key="i">
+      <div class="card-body">
+        <h5 class="card-title">{{answer.content}}</h5>          
+        <button v-if="activeUser.userId === answer.userId._id" type="button" class="btn btn-danger" @click="removeAnswer(answer)">Remove</button>
+      </div>
+      <div class="card-footer text-muted row">
+        <div class="col-md-2">
+        <button type="button" class="btn btn-success" @click="upVoteAns(answer._id)"><span>{{answer.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
+        <button type="button" class="btn btn-warning" @click="downVoteAns(answer._id)"><span>{{answer.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
         </div>
-        <div class="card-footer text-muted row">
-          <div class="col-md-2">
-          <button type="button" class="btn btn-success" @click="upVoteAns(answer._id)"><span>{{answer.upvotes.length}}  </span><i class="far fa-thumbs-up"></i></button>
-          <button type="button" class="btn btn-warning" @click="downVoteAns(answer._id)"><span>{{answer.downvotes.length}}  </span><i class="far fa-thumbs-down"></i></button>
-          </div>
-          <div class="col-md-10" id="ansauthr">
-            answer by : {{answer.userId.name}} | posted on: {{timeConvert(answer.createdAt)}}
-          </div>
+        <div class="col-md-10" id="ansauthr" v-if="answer.userId.name === null">
+          answer by : loading... | posted on: {{timeConvert(answer.createdAt)}}
+        </div>            
+        <div class="col-md-10" id="ansauthr" v-else>
+          answer by : {{answer.userId.name}} | posted on: {{timeConvert(answer.createdAt)}}
         </div>
       </div>
+    </div>
   </div>
 </template>
 
@@ -148,6 +156,7 @@ export default {
 <style scoped>
 .jumbotron {
   text-align: center;
+  background-color: #f1f1f2;
 }
 #title {
   max-height: 100px;

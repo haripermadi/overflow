@@ -5,7 +5,7 @@
       <h3>My Questions</h3>
     </div>
     <div class="jumbotron">
-      <div class="list-group" v-for="(question, i) in myQuestions" :key="i">
+      <div class="list-group" v-for="(question, i) in listUserQuestions" :key="i">
         <div class="list-group-item list-group-item-action list-group-item-dark">{{question.title}} <span class="removeTag" @click="deleteQuestion(question)"><i class="far fa-trash-alt"></i></span><span class="editTag" data-toggle="modal" data-target="#editModal" @click="getEditQuestion(question)"><i class="far fa-edit"></i></span></div>
       </div>
     </div>
@@ -44,6 +44,7 @@
 <script>
 import swal from 'sweetalert2'
 import Navbar from '@/components/Navbar'
+import { mapState } from 'vuex'
 export default {
   name: 'MyQuestions',
   components: {
@@ -58,9 +59,12 @@ export default {
     this.$store.dispatch('getUserQuestion')
   },
   computed: {
-    myQuestions: function () {
-      return this.$store.getters.getMyQuestions
-    }
+    // myQuestions: function () {
+    //   return this.$store.getters.getMyQuestions
+    // },
+    ...mapState([
+      'listUserQuestions'
+    ])
   },
   methods: {
     getEditQuestion: function (question) {

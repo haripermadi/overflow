@@ -14,7 +14,7 @@ export default {
 footer {
   padding-top: 20px;
   padding-bottom: 10px;
-  background-color: black;
+  background-color: #003b46;
   color: white;
   margin-top: 20px;
 }
