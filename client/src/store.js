@@ -275,7 +275,12 @@ export default new Vuex.Store({
         }
       }).then(response => {
         console.log('response upvote==', response)
-        // context.commit('getQuestionById')
+        swal(
+          'Voted!',
+          'Vote success!',
+          'success'
+        )
+        context.dispatch('getQuestionById', payload)
       }).catch(error => {
         console.log(error)
       })
@@ -292,6 +297,12 @@ export default new Vuex.Store({
         }
       }).then(response => {
         console.log('response upvote==', response)
+        swal(
+          'Voted!',
+          'You just downvote this success!',
+          'success'
+        )
+        context.dispatch('getQuestionById', payload)
       }).catch(error => {
         console.log(error)
       })
@@ -308,6 +319,12 @@ export default new Vuex.Store({
         }
       }).then(response => {
         console.log('response upvote==', response)
+        location.reload()
+        swal(
+          'Voted!',
+          'Vote success!',
+          'success'
+        )
       }).catch(error => {
         console.log(error)
       })
@@ -324,6 +341,12 @@ export default new Vuex.Store({
         }
       }).then(response => {
         console.log('response upvote==', response)
+        location.reload()
+        swal(
+          'Voted!',
+          'You just downvote this success!',
+          'success'
+        )
       }).catch(error => {
         console.log(error)
       })
