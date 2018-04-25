@@ -14,18 +14,7 @@ export default new Vuex.Store({
       token: localStorage.getItem('token') || '',
       name: localStorage.getItem('name') || ''
     },
-    listQuestions: [{
-      _id: '',
-      title: '',
-      description: '',
-      userId: {
-        _id: '',
-        name: '',
-        email: ''
-      },
-      upvotes: [],
-      downvotes: []
-    }],
+    listQuestions: [],
     listUserQuestions: [],
     questionById: {},
     listAnswers: []
