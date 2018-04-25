@@ -6,21 +6,31 @@
       <p class="lead">Learn and share how to take care your cats.</p>
     </div>
     <div class="container">
+      {{ listQuestions }}
       <div class="row">
         <div class="col-md-3">
           <button v-if="token !== ''" type="button" class="btn btn-primary" data-toggle="modal" data-target="#questionModal">Post new Question</button>
         </div>
         <div class="col-md-9">
           <h2>List of Questions</h2>
-          <div class="list-group" v-for="(question, i) in listQuestions" :key="i">
-            <router-link :to="{name: 'DetailQuestion', params: {id:question._id}}" class="list-group-item list-group-item-action flex-column align-items-start">
-              <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">{{question.title}}</h5>
-                <small>{{timeConvert(question.createdAt)}}</small>
-              </div>
-              <small>asked by : {{question.userId.name}}</small>
-            </router-link>
+          <div v-if="listQuestions.length === 0">
+            loading...
           </div>
+          <div v-else>
+            {{ listQuestions }}
+            data === {{ data }}
+            <button @click="test">test</button>
+            <div class="list-group" v-for="(question, i) in listQuestions" :key="i">
+              <router-link :to="{name: 'DetailQuestion', params: {id:question._id}}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                  <h5 class="mb-1">{{question.title}}</h5>
+                  <small>{{timeConvert(question.createdAt)}}</small>
+                </div>
+                <small>asked by : {{question.userId.name}}</small>
+              </router-link>
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>
@@ -59,6 +69,7 @@
 <script>
 import Navbar from '@/components/Navbar'
 import moment from 'moment'
+// import { mapState } from 'vuex'
 export default {
   name: 'Home',
   components: {
@@ -67,21 +78,26 @@ export default {
   data () {
     return {
       title: '',
-      description: ''
+      description: '',
+      data: []
     }
   },
   created: function () {
-    this.$store.dispatch('showAllQuestions')
+    this.fetch()
+    this.test()
   },
   computed: {
     listQuestions: function () {
-      return this.$store.getters.getAllQuestions
+      return this.$store.state.listQuestions
     },
     token: function () {
       return this.$store.getters.getActiveUser.token
     }
   },
   methods: {
+    fetch () {
+      this.$store.dispatch('showAllQuestions')
+    },
     buttonPost: function () {
       let input = {
         title: this.title,
@@ -91,6 +107,10 @@ export default {
     },
     timeConvert: function (data) {
       return moment(data).startOf('hour').fromNow()
+    },
+    test: function () {
+      console.log('data===', this.$store.state.listQuestions)
+      this.data = this.$store.state.listQuestions
     }
   }
   // updated: function () {

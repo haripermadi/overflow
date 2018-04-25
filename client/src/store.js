@@ -5,6 +5,8 @@ import swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
+// const serverurl = 'http://server-catsflow.haripermadi.com'
+const serverurl = 'http://localhost:3000'
 export default new Vuex.Store({
   state: {
     activeUser: {
@@ -12,7 +14,14 @@ export default new Vuex.Store({
       token: localStorage.getItem('token') || '',
       name: localStorage.getItem('name') || ''
     },
-    listQuestions: [],
+    listQuestions: [{
+      _id: '',
+      title: '',
+      description: '',
+      userId: '',
+      upvotes: [],
+      downvotes: []
+    }],
     listUserQuestions: [],
     questionById: {},
     listAnswers: []
@@ -36,6 +45,7 @@ export default new Vuex.Store({
   },
   mutations: {
     showAllQuestions: function (state, payload) {
+      console.log(payload)
       state.listQuestions = payload
     },
     showUserQuestions: function (state, payload) {
@@ -59,7 +69,7 @@ export default new Vuex.Store({
       console.log('signup payloda', payload)
       axios({
         method: 'post',
-        url: 'http://localhost:3000/users/signup',
+        url: `${serverurl}/users/signup`,
         data: {
           name: payload.name,
           email: payload.email,
@@ -84,7 +94,7 @@ export default new Vuex.Store({
       console.log('masuk signin', payload)
       axios({
         method: 'post',
-        url: 'http://localhost:3000/users/signin',
+        url: `${serverurl}/users/signin`,
         data: {
           email: payload.email,
           password: payload.password
@@ -131,7 +141,7 @@ export default new Vuex.Store({
     showAllQuestions: function (context) {
       axios({
         method: 'get',
-        url: 'http://localhost:3000/question'
+        url: `${serverurl}/question`
       }).then(response => {
         context.commit('showAllQuestions', response.data.data)
       }).catch(error => {
@@ -141,7 +151,7 @@ export default new Vuex.Store({
     addQuestion: function (context, payload) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/question',
+        url: `${serverurl}/question`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -160,7 +170,7 @@ export default new Vuex.Store({
     removeQuestion: function (context, payload) {
       axios({
         method: 'delete',
-        url: `http://localhost:3000/question/${payload._id}`,
+        url: `${serverurl}/question/${payload._id}`,
         headers: {
           token: context.state.activeUser.token
         }
@@ -175,7 +185,7 @@ export default new Vuex.Store({
       console.log('id question update==', payload)
       axios({
         method: 'put',
-        url: `http://localhost:3000/question/${payload._id}`,
+        url: `${serverurl}/question/${payload._id}`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -196,7 +206,7 @@ export default new Vuex.Store({
       console.log('getuserquestion===', context.state.activeUser.userId)
       axios({
         method: 'get',
-        url: `http://localhost:3000/question/userquestion/${context.state.activeUser.userId}`
+        url: `${serverurl}/question/userquestion/${context.state.activeUser.userId}`
       }).then(response => {
         context.commit('showUserQuestions', response.data.data)
       }).catch(error => {
@@ -206,7 +216,7 @@ export default new Vuex.Store({
     getQuestionById: function (context, payload) {
       axios({
         method: 'get',
-        url: `http://localhost:3000/question/${payload}`
+        url: `${serverurl}/question/${payload}`
       }).then(response => {
         context.commit('getQuestionById', response.data.data)
       }).catch(error => {
@@ -217,7 +227,7 @@ export default new Vuex.Store({
       console.log('actiongetanswer==', context.state)
       axios({
         method: 'get',
-        url: `http://localhost:3000/answer/${payload}`
+        url: `${serverurl}/answer/${payload}`
       }).then(response => {
         context.commit('showAllAnswer', response.data.data)
       }).catch(error => {
@@ -227,7 +237,7 @@ export default new Vuex.Store({
     createAnswer: function (context, payload) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/answer',
+        url: `${serverurl}/answer`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -246,7 +256,7 @@ export default new Vuex.Store({
     removeAnswer: function (context, payload) {
       axios({
         method: 'delete',
-        url: `http://localhost:3000/answer/${payload._id}`,
+        url: `${serverurl}/answer/${payload._id}`,
         headers: {
           token: context.state.activeUser.token
         }
@@ -266,7 +276,7 @@ export default new Vuex.Store({
       console.log('store-upvote==', payload)
       axios({
         method: 'post',
-        url: 'http://localhost:3000/question/upvote',
+        url: `${serverurl}/question/upvote`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -288,7 +298,7 @@ export default new Vuex.Store({
     downVoteQuestion: function (context, payload) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/question/downvote',
+        url: `${serverurl}/question/downvote`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -310,7 +320,7 @@ export default new Vuex.Store({
     upVoteAnswer: function (context, payload) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/answer/upvote',
+        url: `${serverurl}/answer/upvote`,
         headers: {
           token: context.state.activeUser.token
         },
@@ -332,7 +342,7 @@ export default new Vuex.Store({
     downVoteAnswer: function (context, payload) {
       axios({
         method: 'post',
-        url: 'http://localhost:3000/answer/downvote',
+        url: `${serverurl}/answer/downvote`,
         headers: {
           token: context.state.activeUser.token
         },
